@@ -32,3 +32,40 @@ dropdownSVG.addEventListener("click", (e) => {
     dropDownIsDown = false;
   }
 });
+
+const movieSearchInput = document.getElementById("header-movie-search-input");
+const movieSearchWrap = document.getElementById("search-result-wrap-id");
+
+movieSearchInput.addEventListener("input", async function(event) {
+  console.log("User typed:", event.target.value)
+
+  if (event.target.value == "")
+    {
+      return;
+    }
+
+  try
+  {
+    let res = await fetch("/moviesByName?movieName=" + event.target.value);
+    let list = await res.json();
+
+    movieSearchWrap.innerHTML = "";
+
+    for (let i = 0; i < list.length; i++)
+    {
+      
+      let a = document.createElement("a");
+      let button = document.createElement("button");
+      button.innerHTML = list[i].movieTitel;
+      a.appendChild(button);
+
+      movieSearchWrap.appendChild(a);
+    }
+
+    console.log(list);
+  }
+  catch (e)
+  {
+    console.log(e);
+  }
+});
