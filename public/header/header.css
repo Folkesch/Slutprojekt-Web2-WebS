@@ -1,0 +1,318 @@
+/* Global ===================================================================================================== */
+:root {
+  --black: #000000;
+  --deep-blue: #010626;
+  --darkDark-blue: #010B40;
+  --darkLight-blue: #021859;
+  --lightDark-blue: #03318C;
+  --lightLight-blue: #0455BF;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  width: 100%;
+  background-color: var(--black);
+}
+
+/* No-Acount-Logo =======================================================================================================*/
+
+.No-Account-Logo {
+  border-radius: 100%;
+  aspect-ratio: 1;
+  background-color: var(--darkDark-blue);
+}
+
+.No-Account-Logo > * {
+  fill: white;
+}
+
+/* Star SVG ============================================================================================================== */
+
+.stars-rect {
+  fill: goldenrod;
+}
+
+.stars-outline {
+  fill: black;
+}
+
+/* Global end ===================================================================================================== */
+
+
+:root {
+  --header-content-height: 2.2rem;
+}
+
+/* outer header =============================================================================================== */
+header {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  position: relative;
+
+  background-color: var(--deep-blue);
+  padding: .5rem;
+  padding-top: .7rem;
+  padding-bottom: .7rem;
+  z-index: 10;
+}
+
+/* SVG transtion =============================================================================================== */
+
+.SVGLogo-wrap {
+  display: flex;
+}
+
+.SVGLogo {
+  height: var(--header-content-height);
+}
+
+.SVGLogo-S {
+  fill: var(--darkLight-blue);
+  animation: SVG-down-upp 1s ease forwards;
+}
+
+.SVGLogo-R {
+  animation: SVG-upp-down 1s ease forwards;
+  fill: var(--lightLight-blue);
+}
+
+@keyframes SVG-upp-down {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes SVG-down-upp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search bar =============================================================================================== */
+
+.search-bar-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar-wrap > input {
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+
+  width: 12rem;
+  height: var(--header-content-height);
+
+  background-color: var(--darkLight-blue);
+  color: white;
+  outline-width: 0;
+
+  border-radius: 1rem;
+  box-shadow: none;
+  border: none;
+  padding-left: .7rem;
+  padding-right: .7rem;
+}
+
+.search-bar-wrap > input:focus + .search-result-wrap {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.search-result-wrap {
+  position: absolute;
+  display: block;
+  top: calc(100% + .5rem);
+  width: 12rem;
+  min-height: 12rem;
+
+  background-color: var(--darkLight-blue);
+  padding: .25rem;
+  border-radius: .25rem;
+  box-shadow: 0 2px 5px 0 rgpa(0, 0, 0, 0.1);
+
+  transform: translateY(-10px);
+  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sign in =============================================================================================== */
+
+.Sign-in-wrap {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Sign-in-dropdown-wrap {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#Sign-in-dropdown {
+  position: absolute;
+  top: calc(100% + .5rem);
+  width: 80vw;
+  min-height: 12rem;
+
+  background-color: var(--darkLight-blue);
+  border-radius: .25rem;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+
+  transform: translateY(-10px);
+  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+
+  padding: .7rem;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+
+#Sign-in-dropdown-Account-Logo {
+  height: 4rem;
+  margin-left: auto;
+}
+
+#Sign-in-dropdown-a {
+  padding: .5rem;
+  padding-left: 1.2rem;
+  background-color: var(--lightDark-blue);
+  font-size: 2rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 5rem;
+  font-family: "Rubik", sans-serif;
+  font-weight: bold;
+}
+
+/* Sign in SVG =============================================== */
+
+#Sign-in-dropdown-SVG {
+  height: var(--header-content-height);
+}
+
+#Sign-in-dropdown-SVG > :nth-child(1) {
+  transition: all .7s ease;
+  transform-origin: 50% 50%;
+  transform: translateY(-35%);
+  fill: var(--lightLight-blue);
+}
+
+#Sign-in-dropdown-SVG > :nth-child(2) {
+  transition: all .7s ease;
+  transform-origin: 50% 50%;
+  fill: var(--lightLight-blue);
+}
+
+#Sign-in-dropdown-SVG > :nth-child(3) {
+  transition: all .7s ease;
+  transform-origin: 50% 50%;
+  transform: translateY(35%);
+  fill: var(--lightLight-blue);
+}
+
+.Sign-in-two-button-wrap {
+  display: none;
+}
+
+/* Sign-in-no-dropdown ===================================================================================================== */
+
+.Sign-in-no-dropdown-wrap {
+  display: none;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+#Sign-in-no-dropdown-a {
+  padding: .5rem 1rem .5rem 1rem;
+  background-color: var(--lightDark-blue);
+  font-size: 1rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 5rem;
+  font-family: "Rubik", sans-serif;
+  font-weight: bold;
+
+  max-height: var(--header-content-height);
+}
+
+#Sign-in-no-dropdown-Account-Logo {
+  height: var(--header-content-height);
+}
+
+/* Här skriver du design för mobil */
+
+@media only screen and (min-width: 600px) {
+  /* Här skriver du design för tablet */
+
+  :root {
+    --header-content-height: 2.7rem;
+  }
+
+  .search-bar-wrap > input {
+    width: 18rem;
+  }
+
+  .search-result-wrap {
+    width: 18rem;
+  }
+
+  #Sign-in-dropdown {
+    width: 40vw;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  /* Här skriver du design för desktop */
+
+  :root {
+    --header-content-height: 2.2rem;
+  }
+
+  header {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  .search-bar-wrap > input {
+    width: 20rem;
+  }
+
+  .search-result-wrap {
+    width: 20rem;
+  }
+
+  .Sign-in-dropdown-wrap {
+    display: none;
+  }
+
+  .Sign-in-no-dropdown-wrap {
+    display: flex;
+  }
+
+}

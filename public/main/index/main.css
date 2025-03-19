@@ -1,0 +1,236 @@
+/* Här skriver du design för mobil */
+
+main {
+  position: relative;
+  width: 100%;
+  z-index: 0;
+}
+
+#movei-recommend-wrap {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2rem;
+  display: flex;
+  gap: .7rem;
+  flex-direction: column;
+}
+
+#movei-recommend-main {
+  width: 100%;
+
+  display: none;
+  position: relative;
+}
+
+#movei-recommend-main img {
+  width: 100%;
+  border-radius: 5vw;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  display: block;
+}
+
+.recommend-main-Titel-wrap {
+  width: 50vw;
+  position: absolute;
+  bottom: .5rem;
+  left: 5vw;
+  display: block;
+}
+
+.recommend-main-Titel-wrap > h2 {
+  font-family: "Rubik", sans-serif;
+  font-size: 2rem;
+  max-width: 80%;
+  text-wrap: balance;
+}
+
+.recommend-main-Titel-wrap > svg {
+  width: 40%;
+  display: block;
+}
+
+#movei-recommend-movie-list {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
+  width: 100%;
+  overflow-x: scroll;
+
+  /* remove scroll bar */
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+}
+
+#movei-recommend-movie-list > div {
+  position: relative;
+}
+
+.recommend-movie-list-Titel-wrap {
+  width: 50vw;
+
+  position: absolute;
+  bottom: 1vw;
+  left: 5vw;
+  display: block;
+}
+
+.recommend-movie-list-Titel-wrap > h2 {
+  display: block;
+  font-size: 1.2rem;
+  max-width: 90%;
+  max-height: 20vw;
+  overflow: hidden;
+  text-wrap: balance;
+  font-family: "Rubik", sans-serif;
+}
+
+.recommend-movie-list-Titel-wrap > svg {
+  width: 70%;
+  display: block;
+}
+
+element::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+
+#movei-recommend-movie-list picture {
+  display: block;
+}
+
+#movei-recommend-movie-list img {
+  width: 60vw;
+  aspect-ratio: 10/16;
+  object-fit: cover;
+  border-radius: 5vw;
+  display: block;
+}
+
+@media only screen and (min-width: 600px) {
+  /* Här skriver du design för tablet */
+
+  #movei-recommend-wrap {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  #movei-recommend-main {
+    display: block;
+  }
+
+  #movei-recommend-movie-list {
+    column-gap: calc((100% - 32% * 3) / 2);
+    row-gap: .4rem;
+    flex-wrap: wrap;
+  }
+
+  #movei-recommend-movie-list > div {
+    width: calc(32%);
+  }
+
+  .recommend-movie-list-Titel-wrap {
+    width: 90%;
+    left: 5%;
+    bottom: .15rem;
+  }
+
+  .recommend-movie-list-Titel-wrap > h2 {
+    font-size: 1rem;
+    max-height: 2.5rem;
+    overflow: hidden;
+  }
+
+  .recommend-movie-list-Titel-wrap > svg {
+    width: 50%;
+  }
+
+  #movei-recommend-movie-list picture {
+    width: 100%;
+  }
+
+  #movei-recommend-movie-list img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    border-radius: 1vw;
+  }
+  
+}
+
+@media only screen and (min-width: 769px) {
+  /* Här skriver du design för desktop */
+
+  
+  #movei-recommend-wrap {
+      width: 70%;
+      margin-left: 15%;
+      margin-right: 15%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+  }
+
+  #movei-recommend-main {
+    width: 70%;
+  }
+
+  #movei-recommend-main img {
+    border-radius: 3vw;
+  }
+
+  #movei-recommend-movie-list {
+    width: 30%;
+    flex-direction: column;
+    row-gap: calc(1.5rem / 5);
+  }
+
+  #movei-recommend-movie-list > div {
+    width: 100%;
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
+
+  #movei-recommend-movie-list > div:hover {
+    background-color: rgb(40, 40, 40);
+  }
+
+  #movei-recommend-movie-list picture {
+    width: unset; /* */
+  }
+
+  #movei-recommend-movie-list img {
+    width: calc(70vw * 0.3 * 7 / (3 * 6) - 1.7rem * 16 / (10 * 6));
+    border-radius: .5vw;
+  }
+
+  .recommend-movie-list-Titel-wrap {
+    position: relative;
+    width: unset;
+    overflow: hidden;
+    max-height: calc((70vw * 0.3 * 7 / (3 * 6) - 1.5rem * 16 / (10 * 6)) * 10 / 16);
+  }
+
+  .recommend-movie-list-Titel-wrap > h2 {
+    font-size: 1rem;
+    width: 12vw;
+    max-height: calc((70vw * 0.3 * 7 / (3 * 6) - 1.5rem * 16 / (10 * 6)) * 10 / 16 - 1.5rem);
+    overflow: hidden;
+    color: white;
+  }
+
+  .recommend-movie-list-Titel-wrap > svg {
+    width: 4rem;
+  }
+
+  .recommend-main-Titel-wrap {
+    width: 90%;
+    left: 8%;
+    margin-left: 0;
+  }
+
+  .recommend-main-Titel-wrap > svg {
+    width: 40%;
+  }
+}
