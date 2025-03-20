@@ -79,10 +79,10 @@ window.onload = async () => {
 
 
   const RecommendMainIMG = document.querySelector('#movie-recommend-main img');
-  const Recommendmainh2 = document.querySelector('#movie-recommend-main h2');
+  const Recommendmainspan = document.querySelector('#movie-recommend-main span');
 
   RecommendMainIMG.src = "/image/" + list[0].movieID + "/b.webp";
-  Recommendmainh2.innerHTML = list[0].movieTitel;
+  Recommendmainspan.innerHTML = list[0].movieTitel;
   
   
   const MovieRecommendListdivs = document.querySelectorAll('#movie-recommend-movie-list > div');
@@ -91,11 +91,11 @@ window.onload = async () => {
   {
     const img = MovieRecommendListdivs[i].querySelector("img");
     const source = MovieRecommendListdivs[i].querySelector("source");
-    const h2 = MovieRecommendListdivs[i].querySelector("h2");
+    const span = MovieRecommendListdivs[i].querySelector("span");
 
     img.src = "/image/" + list[i+1].movieID + "/v.webp";
     source.srcset = "/image/" + list[i+1].movieID + "/s.webp";
-    h2.innerHTML = list[i+1].movieTitel;
+    span.innerHTML = list[i+1].movieTitel;
   }
 
 }

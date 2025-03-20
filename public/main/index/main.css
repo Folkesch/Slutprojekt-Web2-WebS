@@ -43,7 +43,7 @@ main {
   display: block;
 }
 
-.recommend-main-Titel-wrap > h2 {
+.recommend-main-Titel-wrap > span {
   font-family: "Rubik", sans-serif;
   font-size: 2rem;
   max-width: 80%;
@@ -86,7 +86,7 @@ element::-webkit-scrollbar {
   display: block;
 }
 
-.recommend-movie-list-Titel-wrap > h2 {
+.recommend-movie-list-Titel-wrap > span {
   display: block;
   font-size: 1.2rem;
   max-width: 90%;
@@ -148,7 +148,7 @@ element::-webkit-scrollbar {
     bottom: .15rem;
   }
 
-  .recommend-movie-list-Titel-wrap > h2 {
+  .recommend-movie-list-Titel-wrap > span {
     font-size: 1rem;
     max-height: 2.5rem;
     overflow: hidden;
@@ -224,7 +224,7 @@ element::-webkit-scrollbar {
     max-height: calc((70vw * 0.3 * 7 / (3 * 6) - 1.5rem * 16 / (10 * 6)) * 10 / 16);
   }
 
-  .recommend-movie-list-Titel-wrap > h2 {
+  .recommend-movie-list-Titel-wrap > span {
     font-size: 1rem;
     width: 12vw;
     max-height: calc((70vw * 0.3 * 7 / (3 * 6) - 1.5rem * 16 / (10 * 6)) * 10 / 16 - 1.5rem);
