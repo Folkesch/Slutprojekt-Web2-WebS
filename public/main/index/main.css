@@ -6,7 +6,7 @@ main {
   z-index: 0;
 }
 
-#movei-recommend-wrap {
+#movie-recommend-wrap {
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
@@ -16,18 +16,18 @@ main {
   flex-direction: column;
 }
 
-#movei-recommend-main {
+#movie-recommend-main {
   width: 100%;
 
   display: none;
   position: relative;
 }
 
-#movei-recommend-main:hover {
+#movie-recommend-main:hover {
   cursor: pointer;
 }
 
-#movei-recommend-main img {
+#movie-recommend-main img {
   width: 100%;
   border-radius: 5vw;
   aspect-ratio: 16/10;
@@ -56,7 +56,7 @@ main {
   display: block;
 }
 
-#movei-recommend-movie-list {
+#movie-recommend-movie-list {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -73,7 +73,7 @@ element::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
 }
 
-#movei-recommend-movie-list > div {
+#movie-recommend-movie-list > div {
   position: relative;
 }
 
@@ -107,11 +107,11 @@ element::-webkit-scrollbar {
   display: block;
 }
 
-#movei-recommend-movie-list picture {
+#movie-recommend-movie-list picture {
   display: block;
 }
 
-#movei-recommend-movie-list img {
+#movie-recommend-movie-list img {
   width: 60vw;
   aspect-ratio: 10/16;
   object-fit: cover;
@@ -122,23 +122,23 @@ element::-webkit-scrollbar {
 @media only screen and (min-width: 600px) {
   /* Här skriver du design för tablet */
 
-  #movei-recommend-wrap {
+  #movie-recommend-wrap {
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
   }
 
-  #movei-recommend-main {
+  #movie-recommend-main {
     display: block;
   }
 
-  #movei-recommend-movie-list {
+  #movie-recommend-movie-list {
     column-gap: calc((100% - 32% * 3) / 2);
     row-gap: .4rem;
     flex-wrap: wrap;
   }
 
-  #movei-recommend-movie-list > div {
+  #movie-recommend-movie-list > div {
     width: calc(32%);
   }
 
@@ -158,11 +158,11 @@ element::-webkit-scrollbar {
     width: 50%;
   }
 
-  #movei-recommend-movie-list picture {
+  #movie-recommend-movie-list picture {
     width: 100%;
   }
 
-  #movei-recommend-movie-list img {
+  #movie-recommend-movie-list img {
     width: 100%;
     aspect-ratio: 16/10;
     border-radius: 1vw;
@@ -174,7 +174,7 @@ element::-webkit-scrollbar {
   /* Här skriver du design för desktop */
 
   
-  #movei-recommend-wrap {
+  #movie-recommend-wrap {
       width: 70%;
       margin-left: 15%;
       margin-right: 15%;
@@ -182,37 +182,37 @@ element::-webkit-scrollbar {
       flex-wrap: nowrap;
   }
 
-  #movei-recommend-main {
+  #movie-recommend-main {
     width: 70%;
   }
 
-  #movei-recommend-main img {
+  #movie-recommend-main img {
     border-radius: 3vw;
   }
 
-  #movei-recommend-movie-list {
+  #movie-recommend-movie-list {
     width: 30%;
     flex-direction: column;
     row-gap: calc(1.5rem / 5);
   }
 
-  #movei-recommend-movie-list > div {
+  #movie-recommend-movie-list > div {
     width: 100%;
     display: flex;
     gap: 0;
     align-items: center;
   }
 
-  #movei-recommend-movie-list > div:hover {
+  #movie-recommend-movie-list > div:hover {
     background-color: rgb(40, 40, 40);
     cursor: pointer;
   }
 
-  #movei-recommend-movie-list picture {
+  #movie-recommend-movie-list picture {
     width: unset; /* */
   }
 
-  #movei-recommend-movie-list img {
+  #movie-recommend-movie-list img {
     width: calc(70vw * 0.3 * 7 / (3 * 6) - 1.7rem * 16 / (10 * 6));
     border-radius: .5vw;
   }

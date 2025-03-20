@@ -78,14 +78,14 @@ window.onload = async () => {
   const list = await res.json();
 
 
-  const RecommendMainIMG = document.querySelector('#movei-recommend-main img');
-  const Recommendmainh2 = document.querySelector('#movei-recommend-main h2');
+  const RecommendMainIMG = document.querySelector('#movie-recommend-main img');
+  const Recommendmainh2 = document.querySelector('#movie-recommend-main h2');
 
   RecommendMainIMG.src = "/image/" + list[0].movieID + "/b.webp";
   Recommendmainh2.innerHTML = list[0].movieTitel;
   
   
-  const MovieRecommendListdivs = document.querySelectorAll('#movei-recommend-movie-list > div');
+  const MovieRecommendListdivs = document.querySelectorAll('#movie-recommend-movie-list > div');
 
   for (let i = 0; i < 6; i++)
   {
