@@ -33,6 +33,8 @@ dropdownSVG.addEventListener("click", (e) => {
   }
 });
 
+
+
 const movieSearchInput = document.getElementById("header-movie-search-input");
 const movieSearchWrap = document.getElementById("search-result-wrap-id");
 
@@ -69,3 +71,31 @@ movieSearchInput.addEventListener("input", async function(event) {
     console.log(e);
   }
 });
+
+window.onload = async () => {
+
+  const res = await fetch("/recommendedMovies");
+  const list = await res.json();
+
+
+  const RecommendMainIMG = document.querySelector('#movei-recommend-main img');
+  const Recommendmainh2 = document.querySelector('#movei-recommend-main h2');
+
+  RecommendMainIMG.src = "/image/" + list[0].movieID + "/b.webp";
+  Recommendmainh2.innerHTML = list[0].movieTitel;
+  
+  
+  const MovieRecommendListdivs = document.querySelectorAll('#movei-recommend-movie-list > div');
+
+  for (let i = 0; i < 6; i++)
+  {
+    const img = MovieRecommendListdivs[i].querySelector("img");
+    const source = MovieRecommendListdivs[i].querySelector("source");
+    const h2 = MovieRecommendListdivs[i].querySelector("h2");
+
+    img.src = "/image/" + list[i+1].movieID + "/v.webp";
+    source.srcset = "/image/" + list[i+1].movieID + "/s.webp";
+    h2.innerHTML = list[i+1].movieTitel;
+  }
+
+}

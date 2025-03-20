@@ -9,7 +9,12 @@
   "author": "Folke Schönberg",
   "license": "ISC",
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.14",
     "express": "^4.21.2",
-    "mysql2": "^3.13.0"
+    "mysql2": "^3.13.0",
+    "tailwindcss": "^4.0.14"
+  },
+  "devDependencies": {
+    "vite": "^6.2.2"
   }
 }

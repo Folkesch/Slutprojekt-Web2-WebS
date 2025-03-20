@@ -11,15 +11,16 @@ const pool = mysql.createPool({
 });
 
 const app = express();
-app.use(express.static("public"));
+app
+.use(express.static("public"));
 app.use("/image", express.static("images"));
 
 
 
 app.get("/moviesByName", async (appReq, appRes) => {
+  const query = "SELECT movieTitel, movieID FROM movies WHERE movieTitel LIKE ? ORDER BY movieTitel ASC LIMIT 10";
   try
   {
-    const query = "SELECT movieTitel, movieID FROM movies WHERE movieTitel LIKE ? ORDER BY movieTitel ASC LIMIT 10"
     const [queryResult, fields] = await pool.execute(query, [appReq.query.movieName + "%"]);
   
     appRes.status(200);
@@ -30,9 +31,25 @@ app.get("/moviesByName", async (appReq, appRes) => {
     console.log(e);
     appRes.sendStatus(500);
   }
-})
+});
+
+app.get("/recommendedMovies", async (appReq, appRes) => {
+  const query = "SELECT movieID, movieTitel FROM movies ORDER BY RAND() LIMIT 7";
+  try
+  {
+    const [queryResult, fields] = await pool.query(query);
+
+    appRes.status(200);
+    appRes.send(JSON.stringify(queryResult));
+  }
+  catch (e)
+  {
+    console.log(e);
+    appRes.sendStatus(500);
+  }
 
 
+});
 
 
 

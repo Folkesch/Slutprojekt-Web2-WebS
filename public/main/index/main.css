@@ -94,6 +94,7 @@ element::-webkit-scrollbar {
   overflow: hidden;
   text-wrap: balance;
   font-family: "Rubik", sans-serif;
+  color: white;
 
   overflow: hidden;
   display: -webkit-box;
@@ -228,7 +229,6 @@ element::-webkit-scrollbar {
     width: 12vw;
     max-height: calc((70vw * 0.3 * 7 / (3 * 6) - 1.5rem * 16 / (10 * 6)) * 10 / 16 - 1.5rem);
     overflow: hidden;
-    color: white;
   }
 
   .recommend-movie-list-Titel-wrap > svg {
