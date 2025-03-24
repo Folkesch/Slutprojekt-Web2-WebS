@@ -8,12 +8,6 @@
   --lightLight-blue: #0455BF;
 }
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body{
   width: 100%;
   background-color: var(--black);
@@ -76,6 +70,10 @@ header {
 
 .SVGLogo {
   height: var(--header-content-height);
+}
+
+.SVGLogo:hover {
+  cursor: pointer;
 }
 
 .SVGLogo-S {
