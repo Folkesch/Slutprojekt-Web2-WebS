@@ -34,7 +34,7 @@ app.get("/moviesByName", async (appReq, appRes) => {
 });
 
 app.get("/recommendedMovies", async (appReq, appRes) => {
-  const query = "SELECT movieID, movieTitel FROM movies ORDER BY RAND() LIMIT 7";
+  const query = "SELECT movies.movieID, movieTitel, SUM(score) as scoreSum, COUNT(score) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID GROUP BY movieID ORDER BY RAND() LIMIT 7;";
   try
   {
     const [queryResult, fields] = await pool.query(query);
@@ -47,12 +47,39 @@ app.get("/recommendedMovies", async (appReq, appRes) => {
     console.log(e);
     appRes.sendStatus(500);
   }
-
-
 });
 
+app.get("/movieData", async (appReq, appRes) => {
+  const query = "SELECT movies.movieID, movieTitel, movieDescription, movieLength, releaseDate, SUM(score) as scoreSum, COUNT(score) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID WHERE movies.movieID = ? GROUP BY movieID"
+  try
+  {
+    const [queryResult, fields] = await pool.execute(query, [appReq.query.id]);
+  
+    appRes.status(200);
+    appRes.send(JSON.stringify(queryResult));
+  }
+  catch (e)
+  {
+    console.log(e);
+    appRes.sendStatus(500);
+  }
+});
 
-
+app.get("/actors", async (appReq, appRes) => {
+  const query = "SELECT actors.actorID, firstName, lastName, characterPlayed FROM movieToActor LEFT JOIN actors ON actors.actorID = movieToActor.actorID WHERE movieID = ?"
+  try
+  {
+    const [queryResult, fields] = await pool.execute(query, [appReq.query.id]);
+  
+    appRes.status(200);
+    appRes.send(JSON.stringify(queryResult));
+  }
+  catch (e)
+  {
+    console.log(e);
+    appRes.sendStatus(500);
+  }
+});
 
 
 
