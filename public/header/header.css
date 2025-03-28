@@ -247,6 +247,11 @@ header {
   height: var(--header-content-height);
 }
 
+#Sign-in-dropdown-SVG:hover
+{
+  cursor: pointer;
+}
+
 #Sign-in-dropdown-SVG > :nth-child(1) {
   transition: all .7s ease;
   transform-origin: 50% 50%;
@@ -332,7 +337,7 @@ header {
   }
 
   .search-bar-wrap > input {
-    width: 30rem;
+    width: 28rem;
   }
 
   .search-result-wrap {

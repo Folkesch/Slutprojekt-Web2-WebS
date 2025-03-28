@@ -1,6 +1,13 @@
 const express = require("express");
 const mysql = require('mysql2/promise');
-const fs = require('fs');
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+//const fs = require('fs');
+
+//Admin: username: Admin, pass: AdminPass
+
+const COOKIE_MASTER_KEY = "MasterPassword";
 
 const pool = mysql.createPool({
   host: "localhost",
@@ -11,11 +18,120 @@ const pool = mysql.createPool({
 });
 
 const app = express();
-app
-.use(express.static("public"));
+app.use(express.static("public"));
 app.use("/image", express.static("images"));
 
+app.use(express.json());
+app.use(cookieParser());
 
+app.post("/createAccount", async (appReq, appRes) => {
+
+  try {
+    const userExistsQuery = "SELECT userID FROM users WHERE username = ?";
+    const [userID, fields] = await pool.execute(userExistsQuery, [appReq.body.username]);
+
+    if (userID.length != 0)
+    {
+      appRes.status(409);
+      appRes.send("This usermane is already taken");
+    }
+    else
+    {
+      const createUserQuery = "INSERT INTO users (username, userPassword) VALUES (?, ?);";
+
+      const hashedPassword = bcrypt.hashSync(appReq.body.password, 10);
+
+      await pool.execute(createUserQuery, [appReq.body.username, hashedPassword]);
+
+      appRes.status(200);
+      appRes.send("Signup successful!");
+    }
+
+  }
+  catch (e)
+  {
+    console.log(e);
+    appRes.sendStatus(500);
+  }
+
+})
+
+app.post("/LogIn", async (appReq, appRes) => {
+
+  try
+  {
+    const getPasswordAndIDQuery = "SELECT userID, userPassword FROM users WHERE username = ?";
+    const [hashedPasswordAndID, fields] = await pool.execute(getPasswordAndIDQuery, [appReq.body.username]);
+
+    if (hashedPasswordAndID.length == 0)
+    {
+      appRes.status(401);
+      appRes.send("Wrong username");
+    }
+    else
+    {
+      const rightPass = bcrypt.compareSync(appReq.body.password, hashedPasswordAndID[0].userPassword);
+      if (rightPass)
+      {
+        appRes.status(200);
+
+        const token = jwt.sign({ "userID": hashedPasswordAndID[0].userID, "username": appReq.body.username }, COOKIE_MASTER_KEY, { expiresIn: "8h" });
+        appRes.cookie("token", token, {
+          httpOnly: true,
+          expiresIn: 8 * 60 * 60,
+          path: "/",
+          secure: true,
+          sameSite: "strict"
+        });
+
+        appRes.send("Login successful")
+      } else {
+        appRes.status(401);
+        appRes.send("Wrong password");
+      }
+    }
+
+  }
+  catch (e)
+  {
+    console.log(e);
+    appRes.sendStatus(500);
+  }
+
+});
+
+app.post("/LogOut", async (appReq, appRes) => {
+
+});
+
+app.get("/username", async (appReq, appRes) => {
+
+  const token = appReq.cookies.token;
+
+  if (!token)
+  {
+    app.sendStatus(401);
+  }
+
+  try {
+    const obj = jwt.verify(token, COOKIE_MASTER_KEY);
+    appRes.status(200);
+    appRes.send(obj.username);
+  } catch (e) {
+    app.sendStatus(500);
+  }
+})
+
+app.post("review", async (appReq, appRes) => {
+  const token = appReq.cookies.token;
+
+  try {
+    const obj = jwt.verify(token, COOKIE_MASTER_KEY);
+    obj.userID // USER ID
+  } catch (e) {
+
+  }
+});
 
 app.get("/moviesByName", async (appReq, appRes) => {
   const query = "SELECT movieTitel, movieID FROM movies WHERE movieTitel LIKE ? ORDER BY movieTitel ASC LIMIT 10";
