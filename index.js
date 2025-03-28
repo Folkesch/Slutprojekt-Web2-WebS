@@ -26,32 +26,40 @@ app.use(cookieParser());
 
 app.post("/createAccount", async (appReq, appRes) => {
 
-  try {
-    const userExistsQuery = "SELECT userID FROM users WHERE username = ?";
-    const [userID, fields] = await pool.execute(userExistsQuery, [appReq.body.username]);
-
-    if (userID.length != 0)
-    {
-      appRes.status(409);
-      appRes.send("This usermane is already taken");
-    }
-    else
-    {
-      const createUserQuery = "INSERT INTO users (username, userPassword) VALUES (?, ?);";
-
-      const hashedPassword = bcrypt.hashSync(appReq.body.password, 10);
-
-      await pool.execute(createUserQuery, [appReq.body.username, hashedPassword]);
-
-      appRes.status(200);
-      appRes.send("Signup successful!");
-    }
-
-  }
-  catch (e)
+  if (!appReq.body.username || !appReq.body.password)
   {
-    console.log(e);
-    appRes.sendStatus(500);
+    appRes.sendStatus(400);
+    console.log(appReq.body.username, appReq.body.password)
+  }
+  else
+  {
+    try {
+      const userExistsQuery = "SELECT userID FROM users WHERE username = ?";
+      const [userID, fields] = await pool.execute(userExistsQuery, [appReq.body.username]);
+  
+      if (userID.length != 0)
+      {
+        appRes.status(409);
+        appRes.send("This usermane is already taken");
+      }
+      else
+      {
+        const createUserQuery = "INSERT INTO users (username, userPassword) VALUES (?, ?);";
+  
+        const hashedPassword = bcrypt.hashSync(appReq.body.password, 10);
+  
+        await pool.execute(createUserQuery, [appReq.body.username, hashedPassword]);
+  
+        appRes.status(200);
+        appRes.send("Signup successful!");
+      }
+  
+    }
+    catch (e)
+    {
+      console.log(e);
+      appRes.sendStatus(500);
+    }
   }
 
 })
@@ -101,7 +109,9 @@ app.post("/LogIn", async (appReq, appRes) => {
 });
 
 app.post("/LogOut", async (appReq, appRes) => {
-
+  appRes.clearCookie("token");
+  appRes.status(200);
+  appRes.send("Cookie has been cleared!");
 });
 
 app.get("/username", async (appReq, appRes) => {
@@ -110,15 +120,17 @@ app.get("/username", async (appReq, appRes) => {
 
   if (!token)
   {
-    app.sendStatus(401);
+    appRes.sendStatus(401);
   }
-
-  try {
-    const obj = jwt.verify(token, COOKIE_MASTER_KEY);
-    appRes.status(200);
-    appRes.send(obj.username);
-  } catch (e) {
-    app.sendStatus(500);
+  else
+  {
+    try {
+      const obj = jwt.verify(token, COOKIE_MASTER_KEY);
+      appRes.status(200);
+      appRes.send(obj.username);
+    } catch (e) {
+      appRes.sendStatus(500);
+    }
   }
 })
 

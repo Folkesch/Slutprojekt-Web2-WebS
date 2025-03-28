@@ -67,5 +67,24 @@ window.onload = async () => {
 
     actorSection.appendChild(div);
   }
+
+
+
+  // add review button =========================================================================================================
+
+  
+  const usernameRes = await fetch("/username", {
+    method: "GET",
+    credentials: "include"
+  })
+
+  //console.log(await usernameRes.text());
+
+  if (usernameRes.status != 200)
+  {
+    const reviewButtonWrap = document.getElementById("review-button-wrap");
+    const reviewButton = document.querySelector("#review-button-wrap > button");
+    reviewButtonWrap.removeChild(reviewButton);
+  }
   
 }

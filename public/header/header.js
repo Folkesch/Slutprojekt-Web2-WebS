@@ -71,3 +71,21 @@ movieSearchInput.addEventListener("input", async function(event) {
     console.log(e);
   }
 });
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const usernameRes = await fetch("/username", {
+    method: "GET",
+    credentials: "include"
+  })
+
+  if (usernameRes.status == 200)
+  {
+    
+      const button1 = document.getElementById("Sign-in-dropdown-a");
+      const button2 = document.getElementById("Sign-in-no-dropdown-a");
+    
+      button1.innerHTML = "Log Out";
+      button2.innerHTML = "Log Out";
+  }
+});
