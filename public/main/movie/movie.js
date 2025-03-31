@@ -80,11 +80,18 @@ window.onload = async () => {
 
   //console.log(await usernameRes.text());
 
-  if (usernameRes.status != 200)
+  const reviewButtonWrap = document.getElementById("review-button-wrap");
+  const reviewButton = document.querySelector("#review-button-wrap > button");
+  reviewButtonWrap.removeChild(reviewButton);
+  
+  reviewButton.className
+  if (usernameRes.status == 200)
   {
-    const reviewButtonWrap = document.getElementById("review-button-wrap");
-    const reviewButton = document.querySelector("#review-button-wrap > button");
-    reviewButtonWrap.removeChild(reviewButton);
+    const button = document.createElement("button");
+    button.className = reviewButton.className;
+    button.onclick = () => { window.location = '/html/review.html?id=' + movieID }
+    button.innerHTML = reviewButton.innerHTML;
+    reviewButtonWrap.appendChild(button);
   }
   
 }

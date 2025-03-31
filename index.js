@@ -134,14 +134,56 @@ app.get("/username", async (appReq, appRes) => {
   }
 })
 
-app.post("review", async (appReq, appRes) => {
+app.post("/review", async (appReq, appRes) => {
   const token = appReq.cookies.token;
 
-  try {
-    const obj = jwt.verify(token, COOKIE_MASTER_KEY);
-    obj.userID // USER ID
-  } catch (e) {
+  if (!token)
+  {
+    appRes.status(401);
+    appRes.send("You are not logged in. Please log in");
+  }
+  else
+  {
+    try {
+      const obj = jwt.verify(token, COOKIE_MASTER_KEY);
 
+      const userID    = obj.userID; // USER ID
+      const movieID   = appReq.body.movieID;
+      const rating    = appReq.body.rating;
+      let content;
+      if (!appReq.body.content)
+      {
+        content = null;
+      }
+      else
+      {
+        content = appReq.body.content;
+      }
+
+      const checkForOldReviewQuery = "SELECT rating FROM reviews WHERE movieID = ? AND userID = ?";
+      const [OldQueryRes, OldFields] = await pool.execute(checkForOldReviewQuery, [movieID, userID]);
+
+      if (OldQueryRes.length == 0)
+      {
+        const query = "INSERT INTO reviews (userID, movieID, rating, content) VALUES (?, ?, ?, ?)";
+        const [queryRes, fields] = await pool.execute(query, [userID, movieID, rating, content]);
+  
+        appRes.status(201);
+        appRes.send("Review uploaded successfully");
+      }
+      else
+      {
+        const updateReviewQuery = "UPDATE reviews SET rating = ?, content = ? WHERE movieID = ? AND userID = ?";
+        const [queryRes, fields] = await pool.execute(updateReviewQuery, [rating, content, movieID, userID]);
+
+        appRes.status(200);
+        appRes.send("Review updated successfully");
+      }
+
+    } catch (e) {
+      appRes.sendStatus(500);
+      console.log(e);
+    }
   }
 });
 
@@ -162,7 +204,7 @@ app.get("/moviesByName", async (appReq, appRes) => {
 });
 
 app.get("/recommendedMovies", async (appReq, appRes) => {
-  const query = "SELECT movies.movieID, movieTitel, SUM(score) as scoreSum, COUNT(score) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID GROUP BY movieID ORDER BY RAND() LIMIT 7;";
+  const query = "SELECT movies.movieID, movieTitel, SUM(rating) as scoreSum, COUNT(rating) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID GROUP BY movieID ORDER BY RAND() LIMIT 7;";
   try
   {
     const [queryResult, fields] = await pool.query(query);
@@ -178,7 +220,7 @@ app.get("/recommendedMovies", async (appReq, appRes) => {
 });
 
 app.get("/movieData", async (appReq, appRes) => {
-  const query = "SELECT movies.movieID, movieTitel, movieDescription, movieLength, releaseDate, SUM(score) as scoreSum, COUNT(score) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID WHERE movies.movieID = ? GROUP BY movieID"
+  const query = "SELECT movies.movieID, movieTitel, movieDescription, movieLength, releaseDate, SUM(rating) as scoreSum, COUNT(rating) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID WHERE movies.movieID = ? GROUP BY movieID"
   try
   {
     const [queryResult, fields] = await pool.execute(query, [appReq.query.id]);

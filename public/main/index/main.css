@@ -39,6 +39,8 @@ main {
   aspect-ratio: 16/10;
   object-fit: cover;
   display: block;
+
+  background-color: black;
 }
 
 .recommend-main-Titel-wrap {
