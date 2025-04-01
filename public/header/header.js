@@ -87,5 +87,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     
       button1.innerHTML = "Log Out";
       button2.innerHTML = "Log Out";
+
+      const coverRect = document.getElementsByClassName("coverRect");
+
+      coverRect[0].style.fill = "#0455BF";
+      coverRect[1].style.fill = "#0455BF";
+
+      const svgText = document.querySelectorAll(".No-Account-Logo > text");
+      svgText[0].style.fill = 'white';
+      svgText[1].style.fill = 'white';
+
+      const username = await usernameRes.text(); 
+
+      svgText[0].innerHTML = username[0];
+      svgText[1].innerHTML = username[0];
+      
   }
 });

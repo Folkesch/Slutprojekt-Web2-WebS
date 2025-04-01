@@ -25,6 +25,15 @@ body{
   fill: white;
 }
 
+.No-Account-Logo .coverRect {
+  fill: transparent;
+}
+
+.No-Account-Logo > text {
+  font-family: "Roboto", sans-serif;
+  fill: transparent;
+}
+
 /* Star SVG ============================================================================================================== */
 
 .stars-rect {
