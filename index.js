@@ -129,7 +129,7 @@ app.get("/username", async (appReq, appRes) => {
       appRes.status(200);
       appRes.send(obj.username);
     } catch (e) {
-      appRes.sendStatus(500);
+      appRes.sendStatus(401);
     }
   }
 })
@@ -184,6 +184,69 @@ app.post("/review", async (appReq, appRes) => {
       appRes.sendStatus(500);
       console.log(e);
     }
+  }
+});
+
+app.get("/reviews", async (appReq, appRes) => {
+
+  let sortBy;
+  if (appReq.query.sortBy == "most-relevent")
+  {
+    sortBy = "RAND()";
+  }
+  else if (appReq.query.sortBy == "latest")
+  {
+    sortBy = "reviews.uploadTime DESC";
+  }
+  else if (appReq.query.sortBy == "oldest")
+  {
+    sortBy = "reviews.uploadTime ASC";
+  }
+  else
+  {
+    appRes.sendStatus(422);
+    return;
+  }
+
+  let filterStars;
+  switch (appReq.query.filterStars) {
+    case "all-stars":
+      filterStars = ""
+      break;
+    case "1":
+      filterStars = "AND reviews.rating = 1"
+      break;
+    case "2":
+      filterStars = "AND reviews.rating = 2"
+      break;
+    case "3":
+      filterStars = "AND reviews.rating = 3"
+      break;
+    case "4":
+      filterStars = "AND reviews.rating = 4"
+      break;
+    case "5":
+      filterStars = "AND reviews.rating = 5"
+      break;
+    default:
+      appRes.sendStatus(422);
+      return;
+      break;
+  }  
+
+
+  const query = "SELECT username, rating, content FROM reviews LEFT JOIN users ON reviews.userID = users.userID WHERE reviews.movieID = ? " + filterStars + " ORDER BY " + sortBy + " LIMIT 20";
+  try
+  {
+    const [queryResult, fields] = await pool.execute(query, [appReq.query.movieID]);
+  
+    appRes.status(200);
+    appRes.send(JSON.stringify(queryResult));
+  }
+  catch (e)
+  {
+    console.log(e);
+    appRes.sendStatus(500);
   }
 });
 
