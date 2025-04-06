@@ -1,4 +1,7 @@
 window.onload = async () => {
+
+  // if the user is alredy loged in remove averyting and ony display a log out button 
+
   const res = await fetch("/username", {
     method: "GET",
     credentials: "include"
@@ -17,6 +20,7 @@ window.onload = async () => {
   }
 }
 
+// on LogOut button click call post LogOut to remove cookies
 async function LogOut() {
 
   console.log("log out");
@@ -31,6 +35,7 @@ async function LogOut() {
   window.location = "/html/signIn.html";
 }
 
+// on SignUpp button click create an account, log in to the account and reload the page
 async function SignUpp() {
 
   const username = document.getElementById("username").value;
@@ -40,8 +45,6 @@ async function SignUpp() {
   document.getElementById("password").value = "";
 
   if (username == "" || password == "") return;
-
-  console.log(username, password);
 
   const res = await fetch("/createAccount", {
     method: "POST",
@@ -74,7 +77,7 @@ async function SignUpp() {
     warning.innerHTML = text;
   }
 }
-
+// on LogIn button click call post LogIn to add cookies
 async function LogIn() {
 
   const username = document.getElementById("username").value;

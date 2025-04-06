@@ -24,6 +24,9 @@ app.use("/image", express.static("images"));
 app.use(express.json());
 app.use(cookieParser());
 
+// this route adds a new user the the server based on the callers input
+// @param body.password, body.username
+// @return null.
 app.post("/createAccount", async (appReq, appRes) => {
 
   if (!appReq.body.username || !appReq.body.password)
@@ -62,8 +65,11 @@ app.post("/createAccount", async (appReq, appRes) => {
     }
   }
 
-})
+});
 
+// this route adds cookeis on the users browser if they provide teh right authentication 
+// @param body.password, body.username
+// @return cookies [authentication]
 app.post("/LogIn", async (appReq, appRes) => {
 
   try
@@ -83,7 +89,9 @@ app.post("/LogIn", async (appReq, appRes) => {
       {
         appRes.status(200);
 
+        // create cookies
         const token = jwt.sign({ "userID": hashedPasswordAndID[0].userID, "username": appReq.body.username }, COOKIE_MASTER_KEY, { expiresIn: "8h" });
+        // add cookies to the respones
         appRes.cookie("token", token, {
           httpOnly: true,
           expiresIn: 8 * 60 * 60,
@@ -108,12 +116,18 @@ app.post("/LogIn", async (appReq, appRes) => {
 
 });
 
+// this route removes the cookeis on the users browser
+// @param cookies [authentication]
+// @return null
 app.post("/LogOut", async (appReq, appRes) => {
   appRes.clearCookie("token");
   appRes.status(200);
   appRes.send("Cookie has been cleared!");
 });
 
+// this route returns the users username based on there cookeis
+// @param cookies [authentication]
+// @return username
 app.get("/username", async (appReq, appRes) => {
 
   const token = appReq.cookies.token;
@@ -132,11 +146,15 @@ app.get("/username", async (appReq, appRes) => {
       appRes.sendStatus(401);
     }
   }
-})
+});
 
+// this route takes a review as an input and upploades it to the server
+// @param cookies [authentication], body.movieID, body.rating, body.content [written review]
+// @return succes or not
 app.post("/review", async (appReq, appRes) => {
   const token = appReq.cookies.token;
 
+  // return if no cookies found
   if (!token)
   {
     appRes.status(401);
@@ -145,6 +163,7 @@ app.post("/review", async (appReq, appRes) => {
   else
   {
     try {
+      // get all relevant data 
       const obj = jwt.verify(token, COOKIE_MASTER_KEY);
 
       const userID    = obj.userID; // USER ID
@@ -153,6 +172,7 @@ app.post("/review", async (appReq, appRes) => {
       let content;
       if (!appReq.body.content)
       {
+        // if body is empty return null not ""
         content = null;
       }
       else
@@ -165,6 +185,7 @@ app.post("/review", async (appReq, appRes) => {
 
       if (OldQueryRes.length == 0)
       {
+        // if the user have upploaded an review uppdate the old one
         const query = "INSERT INTO reviews (userID, movieID, rating, content) VALUES (?, ?, ?, ?)";
         const [queryRes, fields] = await pool.execute(query, [userID, movieID, rating, content]);
   
@@ -187,8 +208,12 @@ app.post("/review", async (appReq, appRes) => {
   }
 });
 
+// this route returns a JSON list of all the reviews of the movie with the moveID from tht input
+// @param query.sortBy [how to sort], query.filterStars [how to filter], query.movieID [movie ID]
+// @return username, rating, content
 app.get("/reviews", async (appReq, appRes) => {
 
+  // set the sortBy var to the relevent value based on query.sortBy
   let sortBy;
   if (appReq.query.sortBy == "most-relevent")
   {
@@ -207,7 +232,7 @@ app.get("/reviews", async (appReq, appRes) => {
     appRes.sendStatus(422);
     return;
   }
-
+  // set the filterStars var to the relevent value based on query.filterStars
   let filterStars;
   switch (appReq.query.filterStars) {
     case "all-stars":
@@ -234,7 +259,7 @@ app.get("/reviews", async (appReq, appRes) => {
       break;
   }  
 
-
+  // adding filterStars and sortBy to the query
   const query = "SELECT username, rating, content FROM reviews LEFT JOIN users ON reviews.userID = users.userID WHERE reviews.movieID = ? " + filterStars + " ORDER BY " + sortBy + " LIMIT 20";
   try
   {
@@ -250,6 +275,9 @@ app.get("/reviews", async (appReq, appRes) => {
   }
 });
 
+// this route returns a JSON list of all the movies thet match the input by name
+// @param query.movieName [movie name]
+// @return movieTitel, movieID
 app.get("/moviesByName", async (appReq, appRes) => {
   const query = "SELECT movieTitel, movieID FROM movies WHERE movieTitel LIKE ? ORDER BY movieTitel ASC LIMIT 10";
   try
@@ -266,6 +294,9 @@ app.get("/moviesByName", async (appReq, appRes) => {
   }
 });
 
+// this route returns a JSON list of recomended movies and the relevent information of the movies
+// @param none
+// @return movieID, movieTitel, SUM(rating) as scoreSum, COUNT(rating) as scoreCount
 app.get("/recommendedMovies", async (appReq, appRes) => {
   const query = "SELECT movies.movieID, movieTitel, SUM(rating) as scoreSum, COUNT(rating) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID GROUP BY movieID ORDER BY RAND() LIMIT 7;";
   try
@@ -282,6 +313,9 @@ app.get("/recommendedMovies", async (appReq, appRes) => {
   }
 });
 
+// this route returns a JSON of all the relevent information of a movie
+// @param query.id [movie id]
+// @return movieID, movieTitel, movieDescription, movieLength, releaseDate, SUM(rating) as scoreSum, COUNT(rating) as scoreCount
 app.get("/movieData", async (appReq, appRes) => {
   const query = "SELECT movies.movieID, movieTitel, movieDescription, movieLength, releaseDate, SUM(rating) as scoreSum, COUNT(rating) as scoreCount FROM movies LEFT JOIN reviews ON movies.movieID = reviews.movieID WHERE movies.movieID = ? GROUP BY movieID"
   try
@@ -298,6 +332,9 @@ app.get("/movieData", async (appReq, appRes) => {
   }
 });
 
+// this route sends back a JSON of all actors, and what they playes, that are in the move.
+// @param query.id [actor id]
+// @return actorID, firstName, lastName, characterPlayed
 app.get("/actors", async (appReq, appRes) => {
   const query = "SELECT actors.actorID, firstName, lastName, characterPlayed FROM movieToActor LEFT JOIN actors ON actors.actorID = movieToActor.actorID WHERE movieID = ?"
   try
@@ -316,38 +353,5 @@ app.get("/actors", async (appReq, appRes) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// TESTS =============================================================================
-/*
-async function func() {
-  try
-  {
-    const query = "SELECT movieTitel, movieID FROM movies WHERE movieTitel LIKE ? ORDER BY movieTitel ASC LIMIT 10"
-    const [queryResult, fields] = await pool.execute(query, ["Toy" + "%"]);
-  
-    console.log(queryResult);
-  }
-  catch (e)
-  {
-    console.log(e);
-    //appRes.sendStatus(500);
-  }
-}
-
-func();
-*/
 app.listen(8080);
-console.log("server is running")
+console.log("server is running");

@@ -2,6 +2,7 @@ const stars = document.getElementById("ratingSVG");
 
 let starRating = 3;
 
+// change the amount of states chosen based on where the user clicks  
 stars.addEventListener("click", (e) => {
   const offsets = stars.getBoundingClientRect();
   const w = offsets.right - offsets.left;
@@ -21,8 +22,11 @@ stars.addEventListener("click", (e) => {
 
 window.onload = async () => 
 {
+  // get the movie ID and set the titel to the move name 
+
   const currentURL = window.location.href;
 
+  // get movie ID from the url
   const reg = /id=([0-9]+)/
   const movieID = currentURL.match(reg)[1];
 
@@ -39,6 +43,7 @@ window.onload = async () =>
 
 }
 
+// uppload the review and display if it was succesfull when review is submitted
 async function submit() {
 
   const currentURL = window.location.href;

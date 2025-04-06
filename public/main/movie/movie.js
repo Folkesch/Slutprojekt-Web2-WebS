@@ -14,14 +14,17 @@ window.onload = async () => {
 
   const currentURL = window.location.href;
 
+  // get the movie id from the url
   const reg = /id=([0-9]+)/
   const movieID = currentURL.match(reg)[1];
   gMovieID = movieID;
 
+  // call get movie 
   const res = await fetch("/movieData?id=" + movieID);
   const list = await res.json();
   const info = list[0];
 
+  // add the movie data to the page
   document.title = info.movieTitel;
   moviename.innerHTML = info.movieTitel;
 
@@ -41,6 +44,7 @@ window.onload = async () => {
   lengthAndRelease.innerHTML = "Movie length: " + info.movieLength + " min. Release date: " + info.releaseDate
   movieDescription.innerHTML = info.movieDescription;
 
+  // call get actors to get all the dataa from the actors associated with this movie
   const res2 = await fetch("/actors?id=" + movieID);
   const list2 = await res2.json();
 
@@ -73,9 +77,9 @@ window.onload = async () => {
 
 
 
-  // add review button =========================================================================================================
+  // add review button 
 
-  
+  // call get username, if you get the username it means you are loged in 
   const usernameRes = await fetch("/username", {
     method: "GET",
     credentials: "include"
@@ -86,8 +90,10 @@ window.onload = async () => {
   reviewButtonWrap.removeChild(reviewButton);
   
   reviewButton.className
+
   if (usernameRes.status == 200)
   {
+    // if you are loget in add review button
     const button = document.createElement("button");
     button.className = reviewButton.className;
     button.onclick = () => { window.location = '/html/review.html?id=' + movieID }
@@ -95,8 +101,7 @@ window.onload = async () => {
     reviewButtonWrap.appendChild(button);
   }
 
-  // add reviews ================================================================================================================
-
+  // add reviews 
   addReviews();
   
 }
@@ -111,6 +116,7 @@ async function addReviews()
   const filterStars = document.getElementById("filter-stars");
   const sortBy = document.getElementById("sort-by");
 
+  // call reviews with the filterStars and sortBy selects as inputs 
   const reviewsRes = await fetch("/reviews?movieID=" + gMovieID + "&filterStars=" + filterStars.value + "&sortBy=" + sortBy.value, {
     method: "GET",
   });
@@ -119,6 +125,7 @@ async function addReviews()
   {
     resJson = await reviewsRes.json();
 
+    // for every review returned add a review to the page with the relevent data 
     for (let i = 0; i < resJson.length; i++)
     {
       reviewsWrap.appendChild(NewReview(resJson[i].username, resJson[i].rating, resJson[i].content));
@@ -131,6 +138,7 @@ async function addReviews()
   }
 }
 
+// returns a new review based on the input data
 function NewReview(username, rating, content)
 {
   const template = document.createElement('template');
@@ -155,6 +163,7 @@ function NewReview(username, rating, content)
   return template.content.firstElementChild;
 }
 
+// run the addReviews() function agen if the user chages the selects
 const filterStars = document.getElementById("filter-stars");
 const sortBy = document.getElementById("sort-by");
 

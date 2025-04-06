@@ -1,5 +1,6 @@
 window.onload = async () => {
 
+  // Call get recommendedMovies and use the return data to add the movies to the home page
   const res = await fetch("/recommendedMovies");
   const list = await res.json();
 
