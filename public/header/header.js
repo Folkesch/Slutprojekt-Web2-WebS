@@ -3,6 +3,7 @@ const dropdown = document.getElementById("Sign-in-dropdown");
 
 let dropDownIsDown = false;
 
+// when dropdoen clicked, display dropdown and play animation
 dropdownSVG.addEventListener("click", (e) => {
 
   const children = dropdownSVG.children;
@@ -34,10 +35,9 @@ dropdownSVG.addEventListener("click", (e) => {
 });
 
 
-
 const movieSearchInput = document.getElementById("header-movie-search-input");
 const movieSearchWrap = document.getElementById("search-result-wrap-id");
-
+// when the user writes in the search bar, call get moviesByName with the search bar value as a peramiter and display the results in the search drop down
 movieSearchInput.addEventListener("input", async function(event) {
   console.log("User typed:", event.target.value)
 
@@ -72,6 +72,7 @@ movieSearchInput.addEventListener("input", async function(event) {
   }
 });
 
+// if the user is logged in exchange the sign in button with the log out button, and the no account logo with a logo that have teh first letter of your user name
 document.addEventListener("DOMContentLoaded", async () => {
 
   const usernameRes = await fetch("/username", {
