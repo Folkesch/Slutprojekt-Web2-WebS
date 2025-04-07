@@ -64,8 +64,6 @@ async function submit() {
     content = null;
   }
 
-  console.log(movieID, rating, content);
-
   const res = await fetch("/review", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

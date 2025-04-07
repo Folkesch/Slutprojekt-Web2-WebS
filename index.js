@@ -14,7 +14,8 @@ const pool = mysql.createPool({
   port: 3306,
   user: "root",
   password: "Folke2007",
-  database: "SlutprojektDB"
+  database: "SlutprojektDB",
+  multipleStatements: false
 });
 
 const app = express();

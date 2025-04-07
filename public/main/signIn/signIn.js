@@ -7,8 +7,6 @@ window.onload = async () => {
     credentials: "include"
   })
 
-  console.log(await res.text());
-
   if (res.status == 200)
   {
     const main = document.querySelector("main");
@@ -23,14 +21,10 @@ window.onload = async () => {
 // on LogOut button click call post LogOut to remove cookies
 async function LogOut() {
 
-  console.log("log out");
-
-  const res = await fetch("/LogOut", {
+  await fetch("/LogOut", {
     method: "POST",
     credentials: "include"
   });
-
-  console.log(await res.text());
 
   window.location = "/html/signIn.html";
 }
@@ -55,19 +49,14 @@ async function SignUpp() {
 
   const text = await res.text();
 
-  console.log(res.status, text);
   if (res.status == 200)
   {
-    const res2 = await fetch("/LogIn", {
+    await fetch("/LogIn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ username: username, password: password }),
     });
-  
-    const text2 = await res2.text();
-  
-    console.log(res2.status, text2);
   
     window.location = "/html/signIn.html";
   }
@@ -88,8 +77,6 @@ async function LogIn() {
 
   if (username == "" || password == "") return;
 
-  console.log(username, password);
-
   const res = await fetch("/LogIn", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -98,8 +85,6 @@ async function LogIn() {
   });
 
   const text = await res.text();
-
-  console.log(res.status, text);
 
   if (res.status == 200)
   {
